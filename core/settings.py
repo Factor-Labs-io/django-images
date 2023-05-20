@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'core',
     'strangershq',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +85,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+SWAGGER_SETTINGS = {
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
+    'DEFAULT_INFO': 'strangershq.urls.swagger_info',  # Set the URL to your Swagger info dictionary
+}
+
+
 
 
 # Database

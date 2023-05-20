@@ -44,9 +44,8 @@ class TwitterTrackingSerializer(serializers.Serializer):
         # Perform any additional processing if needed
         return validated_data
     
-
-
 class LeaderboardSerializer(serializers.Serializer):
+    address = serializers.CharField()
 
     def create(self, validated_data):
         # Perform any additional processing if needed
