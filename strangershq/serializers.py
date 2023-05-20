@@ -19,13 +19,6 @@ class ReturnUserSerializer(serializers.Serializer):
     def create(self, validated_data):
         # Perform any additional processing if needed
         return validated_data
-    
-# class DeleteUserSerializer(serializers.Serializer):
-#     address = serializers.CharField()
-
-#     def create(self, validated_data):
-#         # Perform any additional processing if needed
-#         return validated_data
 
 class UpdateHometownSerializer(serializers.Serializer):
     address = serializers.CharField()
@@ -44,11 +37,20 @@ class UpdateInterestsSerializer(serializers.Serializer):
         return validated_data
     
 class TwitterTrackingSerializer(serializers.Serializer):
-    token = serializers.IntegerField()
+    token = serializers.CharField()
     handle = serializers.CharField()
 
     def create(self, validated_data):
         # Perform any additional processing if needed
         return validated_data
+    
+
+
+class LeaderboardSerializer(serializers.Serializer):
+
+    def create(self, validated_data):
+        # Perform any additional processing if needed
+        return validated_data
+    
     
 

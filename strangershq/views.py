@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from . import database, pfp_tracking
 from rest_framework.views import APIView
-from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer
+from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer
 
 from django.http import JsonResponse
 
@@ -92,9 +92,33 @@ class UpdateUserInterestsView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def fetch_leaderboard():
-    result = database.dbQueryLeaderBoard()
-    return JsonResponse({'message': f'{result}'})
+class UpdateUserInterestsView(APIView):
+    def post(self, request):
+        serializer = UpdateInterestsSerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            # Process the validated data
+            address = validated_data['address']
+            interests = validated_data['interests']
+            result = database.dbUpdateInterests(address, interests)
+            if result['status'] == 'Success':
+                return Response({'message': f'{address} successfully changed interests to: {interests}'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                               
+# def fetch_leaderboard():
+#     result = database.dbQueryLeaderBoard()
+#     return JsonResponse({'message': f'{result}'})
+class LeaderboardView(APIView):
+    def post(self, request):
+        serializer = LeaderboardSerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            # Process the validated data
+            result = database.dbQueryLeaderBoard()
+            return Response({'message': f'{result}'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TwitterTrackingView(APIView):
     def post(self, request):
@@ -109,7 +133,4 @@ class TwitterTrackingView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-# def twitter_tracking(request):
-#     result = pfp_tracking.twitterTracking(request)
-#     return JsonResponse({'message': 'Twitter tracking performed successfully'})
 
