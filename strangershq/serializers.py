@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import User
 
 class AddUserSerializer(serializers.Serializer):
     address = serializers.CharField()
@@ -49,6 +50,8 @@ class LeaderboardSerializer(serializers.Serializer):
     def create(self):
         # Perform any additional processing if needed
         return self
-    
-    
 
+class ReturnAllSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

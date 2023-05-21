@@ -1,15 +1,14 @@
 from django.urls import path
-from strangershq import views
-from .views import AddUserView, ReturnUserView, DeleteUserView, UpdateUserHometownView, UpdateUserInterestsView, TwitterTrackingView, LeaderboardView
-from drf_yasg import views as yasg_views
+from .views import AddUserView, ReturnUserView, DeleteUserView, UpdateUserHometownView, UpdateUserInterestsView, TwitterTrackingView, LeaderboardView, QueryAllView
+from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 
-schema_view = yasg_views.get_schema_view(
+schema_view = get_schema_view(
     openapi.Info(
-        title='Endpoints for StrangersHQ',
+        title='Endpoints for 0N1',
         default_version='v1',
-        description='Important endpoints for the SHQ Project',
+        description='Important endpoints for the 0N1 Project',
         terms_of_service='https:www.example.comterms',
         contact=openapi.Contact(email='contact@example.com'),
         license=openapi.License(name='BSD License'),
@@ -21,13 +20,14 @@ schema_view = yasg_views.get_schema_view(
 
 urlpatterns = [
     path('adduser', AddUserView.as_view(), name='add_user'),
-    path('row', ReturnUserView.as_view(), name='get_user_info'),
-    path('deleterow', DeleteUserView.as_view(), name='delete_user_info'),
+    path('row/<str:address>', ReturnUserView.as_view(), name='get_user_info'),
+    path('deleterow/<str:address>', DeleteUserView.as_view(), name='delete_user_info'),
     path('updatehometown', UpdateUserHometownView.as_view(), name='update_user_hometown'),
     path('updateinterests', UpdateUserInterestsView.as_view(), name='update_user_interests'),
     path('leaderboardfetch', LeaderboardView.as_view(), name='fetch_leaderboard'),
     path('pfptracking', TwitterTrackingView.as_view(), name='twitter_tracking'),
-    path('', views.home, name='home'),
+    path('queryall/', QueryAllView.as_view(), name='get_user_info'),
+    # path('', views.home, name='home'),
     path('swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

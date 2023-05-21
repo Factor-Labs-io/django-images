@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'core',
     'strangershq',
     'drf_yasg',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -99,14 +100,28 @@ SWAGGER_SETTINGS = {
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'wallet_information',
+#         'USER': 'wallet_information_user',
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),
+#         'HOST': "dpg-chj5pa3hp8ufsbne5g9g-a.oregon-postgres.render.com",
+#         'PORT': '5432',
 #     }
 # }
-
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_test_umfi',
+        'USER': 'django_test_umfi_user',
+        'PASSWORD': os.environ.get('DB_PASSWORD2'),
+        'HOST': "dpg-chj5pa3hp8ufsbne5g9g-a.oregon-postgres.render.com",
+        'PORT': '5432',
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
+# }
 
 
 # Password validation

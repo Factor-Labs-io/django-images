@@ -1,0 +1,4 @@
+- any endpoint that request info and doesnt update database - use GET request
+- any endpoint that adds new info - use POST request
+- any endpoint that updates info - use PUT request
+- any endpoint that deletes info - use DEL request
