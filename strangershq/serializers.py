@@ -2,8 +2,8 @@ from rest_framework import serializers
 
 class AddUserSerializer(serializers.Serializer):
     address = serializers.CharField()
-    handle = serializers.CharField()
-    token = serializers.CharField()
+    twitter_id = serializers.CharField()
+    token_id = serializers.CharField()
     twitter_url = serializers.CharField()
     hometown = serializers.CharField()
     disc_handle = serializers.CharField()
@@ -37,7 +37,7 @@ class UpdateInterestsSerializer(serializers.Serializer):
         return validated_data
     
 class TwitterTrackingSerializer(serializers.Serializer):
-    token = serializers.CharField()
+    token_id = serializers.CharField()
     handle = serializers.CharField()
 
     def create(self, validated_data):
@@ -45,11 +45,10 @@ class TwitterTrackingSerializer(serializers.Serializer):
         return validated_data
     
 class LeaderboardSerializer(serializers.Serializer):
-    address = serializers.CharField()
 
-    def create(self, validated_data):
+    def create(self):
         # Perform any additional processing if needed
-        return validated_data
+        return self
     
     
 

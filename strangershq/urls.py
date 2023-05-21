@@ -10,7 +10,7 @@ schema_view = yasg_views.get_schema_view(
         title='Endpoints for StrangersHQ',
         default_version='v1',
         description='Important endpoints for the SHQ Project',
-        terms_of_service='https://www.example.com/terms/',
+        terms_of_service='https:www.example.comterms',
         contact=openapi.Contact(email='contact@example.com'),
         license=openapi.License(name='BSD License'),
     ),
@@ -20,14 +20,14 @@ schema_view = yasg_views.get_schema_view(
 
 
 urlpatterns = [
-    path('adduser/', AddUserView.as_view(), name='add_user'),
-    path('row/', ReturnUserView.as_view(), name='get_user_info'),
-    path('deleterow/', DeleteUserView.as_view(), name='delete_user_info'),
-    path('updatehometown/', UpdateUserHometownView.as_view(), name='update_user_hometown'),
-    path('updateinterests/', UpdateUserInterestsView.as_view(), name='update_user_interests'),
-    path('leaderboardfetch/', LeaderboardView.as_view(), name='fetch_leaderboard'),
-    path('twittertracking/', TwitterTrackingView.as_view(), name='twitter_tracking'),
+    path('adduser', AddUserView.as_view(), name='add_user'),
+    path('row', ReturnUserView.as_view(), name='get_user_info'),
+    path('deleterow', DeleteUserView.as_view(), name='delete_user_info'),
+    path('updatehometown', UpdateUserHometownView.as_view(), name='update_user_hometown'),
+    path('updateinterests', UpdateUserInterestsView.as_view(), name='update_user_interests'),
+    path('leaderboardfetch', LeaderboardView.as_view(), name='fetch_leaderboard'),
+    path('pfptracking', TwitterTrackingView.as_view(), name='twitter_tracking'),
     path('', views.home, name='home'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

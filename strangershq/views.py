@@ -19,17 +19,23 @@ class AddUserView(APIView):
         serializer = AddUserSerializer(data=request.data)
         if serializer.is_valid():
             validated_data = serializer.validated_data
+            print("-------")
+            print(validated_data)
+            print("-------")
             # Process the validated data
             address = validated_data['address']
-            handle = validated_data['handle']
-            token = validated_data['token']
+            twitter_id = validated_data['twitter_id']
+            token_id = validated_data['token_id']
             twitter_url = validated_data['twitter_url']
             hometown = validated_data['hometown']
             disc_handle = validated_data['disc_handle']
             interests = validated_data['interests']
             # Perform further processing with the data
-            result = database.dbAddUser(address, handle, token, twitter_url, hometown, disc_handle, interests)
-            return Response({'message': 'User added successfully\n'}, result)
+            result = database.dbAddUser(address, twitter_id, token_id, twitter_url, hometown, disc_handle, interests)
+            # print("------")
+            # print(result)
+            # print("------")
+            return Response({'message': f'{result}'})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -43,7 +49,7 @@ class ReturnUserView(APIView):
             address = validated_data['address']
             result = database.dbQueryRow(address)
             print(result)
-            return Response({'message': f'{result}'})
+            return Response({'message': result})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -96,10 +102,9 @@ class LeaderboardView(APIView):
     def post(self, request):
         serializer = LeaderboardSerializer(data=request.data)
         if serializer.is_valid():
-            validated_data = serializer.validated_data
             # Process the validated data
-            result = leader_board.leaderBoardReturnSpecific(validated_data)
-            return Response({'message': f'{result}'})
+            result = leader_board.leaderBoardReturn()
+            return Response({'message': result})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -110,10 +115,10 @@ class TwitterTrackingView(APIView):
         if serializer.is_valid():
             validated_data = serializer.validated_data
             # Process the validated data
-            token = validated_data['token']
-            handle = validated_data['handle']
-            result = pfp_tracking.twitterTracking(token, handle)
-            return Response({'message': f'{result}'})
+            token_id = validated_data['token_id']
+            twitter_url = validated_data['handle']
+            result = pfp_tracking.twitterTracking(token_id, twitter_url)
+            return Response({'message': result})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

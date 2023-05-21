@@ -4,6 +4,9 @@ import imagehash
 from flask_restful import Resource
 from flask import request
 from . import database
+from moralis import evm_api
+import json
+from . import download_img
 
 import os
 from dotenv import load_dotenv
@@ -21,6 +24,8 @@ def del_ext(directory, ext):
 
 
 def pfpCompare(token_id, twit_handle):
+  api_key_moralis = os.getenv('api_key')
+  address = "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D"
 
   url = f"https://api.twitter.com/2/users/by/username/{twit_handle}?user.fields=profile_image_url"
   
@@ -44,11 +49,47 @@ def pfpCompare(token_id, twit_handle):
   import urllib.request
   urllib.request.urlretrieve(pro_pic_edit, "pfp.jpg")
   
-  shq_token = f'https://s3.us-east-1.wasabisys.com/strangershq/shq_tkn/{token_id}.png'
+  # shq_token = f'https://s3.us-east-1.wasabisys.com/strangershq/shq_tkn/{token_id}.png'
+
+  #Get image from blockchain instead of wasabi
+  params = {
+    "chain": "eth",
+    "format": "decimal",
+    "address": address,
+    "token_id": token_id
+  }
+
+  result = evm_api.nft.get_nft_metadata(
+    api_key=api_key_moralis,
+    params=params,
+  )
+
+  metadata = json.loads(result["metadata"])
+
+  url_image = metadata["image"]
+
+  protocol = url_image[:4]
+
+  url_moralis = ''
+
+  if protocol == 'ipfs':
+
+    url_image_short = url_image[7:]
+    
+    url_moralis = url_moralis + f"https://ipfs.io/ipfs/{url_image_short}"
+
+  else:
+
+    url_moralis = url_moralis + url_image
   
-  # print(shq_token)
+  shq_token = url_moralis
+  print('--------')
+  print(shq_token)
+  print('--------')
   
-  urllib.request.urlretrieve(shq_token, f'{token_id}.png')
+  filename = f'{token_id}.png'
+
+  download_img.dwnld_img(shq_token, filename)
   
   hash0 = imagehash.average_hash(Image.open(f'{token_id}.png'))
   hash1 = imagehash.average_hash(Image.open('pfp.jpg'))
@@ -56,6 +97,10 @@ def pfpCompare(token_id, twit_handle):
   # maximum bits that could be different between the hashes.
 
   #DELETE Media Files Downloaded
+  download_img.remove_file(f'{token_id}.png')
+  download_img.remove_file('pfp.jpg')
+  
+
 
   directory = "/home/runner/strangers"  # Replace with the path to your directory
 
