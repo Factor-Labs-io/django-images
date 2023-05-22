@@ -9,7 +9,7 @@ from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
-from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer, ReturnAllSerializer, UpdateUserTokenIDView
+from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer, ReturnAllSerializer, UpdateTokenIDSerializer
 import requests
 
 class HealthCheckView(APIView):
