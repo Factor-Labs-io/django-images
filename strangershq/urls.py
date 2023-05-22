@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AddUserView, ReturnUserView, DeleteUserView, UpdateUserHometownView, UpdateUserInterestsView, TwitterTrackingView, LeaderboardView, QueryAllView, ConsumeAPI, HealthCheckView
+from .views import AddUserView, ReturnUserView, DeleteUserView, UpdateUserHometownView, UpdateUserInterestsView, TwitterTrackingView, LeaderboardView, QueryAllView, ConsumeAPI, HealthCheckView, UpdateUserTokenIDView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
@@ -25,9 +25,10 @@ urlpatterns = [
     path('deleterow/<str:address>', DeleteUserView.as_view(), name='delete_user_info'),
     path('updatehometown', UpdateUserHometownView.as_view(), name='update_user_hometown'),
     path('updateinterests', UpdateUserInterestsView.as_view(), name='update_user_interests'),
+    path('updatetokenid', UpdateUserTokenIDView.as_view(), name='update_user_interests'),
     #path('leaderboardfetch', LeaderboardView.as_view(), name='fetch_leaderboard'),
     #path('pfptracking', TwitterTrackingView.as_view(), name='twitter_tracking'),
-    path('queryall/', QueryAllView.as_view(), name='get_user_info'),
+    path('queryall', QueryAllView.as_view(), name='get_user_info'),
     path('pfptracking/<str:token_id>/<str:handle>/', ConsumeAPI.as_view(), name='consume-api'),
     # path('', views.home, name='home'),
     path('swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
