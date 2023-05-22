@@ -36,6 +36,11 @@ class UpdateInterestsSerializer(serializers.Serializer):
     def create(self, validated_data):
         # Perform any additional processing if needed
         return validated_data
+
+
+class UpdateTokenIDSerializer(serializers.Serializer):
+    address = serializers.CharField()
+    token_id = serializers.CharField()
     
 class TwitterTrackingSerializer(serializers.Serializer):
     token_id = serializers.CharField()
