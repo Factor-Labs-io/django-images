@@ -211,23 +211,37 @@ class TwitterTrackingView(APIView):
 #         except User.DoesNotExist:
 #             return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
+# class QueryAllView(generics.ListAPIView):
+#     serializer_class = ReturnAllSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         try:
+#             # Process the retrieved user data
+#             queryset = User.objects.all()
+#             user_instances = list(queryset)
+#             user_serialized = self.serializer_class(user_instances, many=True).data
+
+#             # Convert the serialized data to normal JSON format
+#             formatted_json = json.dumps(user_serialized)
+
+#             # Return the JSON response
+#             return HttpResponse(formatted_json, content_type='application/json')
+#         except User.DoesNotExist:
+#             return JsonResponse({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class QueryAllView(generics.ListAPIView):
     serializer_class = ReturnAllSerializer
 
+    @swagger_auto_schema(operation_id='return_all_users')
     def get(self, request, *args, **kwargs):
         try:
-            # Process the retrieved user data
             queryset = User.objects.all()
-            user_instances = list(queryset)
-            user_serialized = self.serializer_class(user_instances, many=True).data
-
-            # Convert the serialized data to normal JSON format
-            formatted_json = json.dumps(user_serialized)
-
-            # Return the JSON response
-            return HttpResponse(formatted_json, content_type='application/json')
+            serializer = self.serializer_class(queryset, many=True)
+            return Response(serializer.data)
         except User.DoesNotExist:
-            return JsonResponse({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
         
