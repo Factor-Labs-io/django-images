@@ -9,7 +9,7 @@ from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
-from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer, ReturnAllSerializer
+from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer, ReturnAllSerializer, UpdateUserTokenIDView
 import requests
 
 class HealthCheckView(APIView):
@@ -164,6 +164,35 @@ class UpdateUserInterestsView(APIView):
                 return Response(
                     {
                         'message': f'{address} successfully changed interests to: {interests}'
+                    }
+                )
+            except User.DoesNotExist:
+                return Response(
+                    {'error': f'User with address {address} does not exist'},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class UpdateUserTokenIDView(APIView):
+    @swagger_auto_schema(
+        request_body=UpdateTokenIDSerializer,
+        operation_id='update_user_token_id',
+    )
+    def put(self, request):
+        serializer = UpdateTokenIDSerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            address = validated_data['address']
+            token_id = validated_data['token_id']
+            try:
+                user = User.objects.get(address=address)
+                user.token_id = token_id
+                user.save()
+                return Response(
+                    {
+                        'message': f'{address} successfully changed token_id to: {token_id}'
                     }
                 )
             except User.DoesNotExist:
