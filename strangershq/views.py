@@ -10,8 +10,29 @@ from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer, ReturnAllSerializer
+import requests
 
+class ConsumeAPI(APIView):
+    @swagger_auto_schema(request_body=AddUserSerializer, operation_id='add_user')
+    def get(self, request, token_id, handle):
 
+        url = "https://0n1-test.factorlabs.io/v1/pfptracking"
+        headers = {
+            "Content-Type": "application/json",
+            # If the endpoint requires authentication, you need to provide it here
+            # "Authorization": "Bearer your_token",
+        }
+        data = {
+            "token_id": token_id,
+            "handle": handle
+        }
+        response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code == 200:
+            return Response(response.json(), status=status.HTTP_200_OK)
+        else:
+            return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
+        
 def home(request):
     return render(request, 'home.html')
 
