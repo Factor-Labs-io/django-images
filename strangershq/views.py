@@ -13,7 +13,13 @@ from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometown
 import requests
 
 class ConsumeAPI(APIView):
-    @swagger_auto_schema(request_body=AddUserSerializer, operation_id='add_user')
+    @swagger_auto_schema(
+        operation_id='add_user',
+        manual_parameters=[
+            openapi.Parameter('token_id', openapi.IN_PATH, type=openapi.TYPE_STRING),
+            openapi.Parameter('handle', openapi.IN_PATH, type=openapi.TYPE_STRING),
+        ]
+    )
     def get(self, request, token_id, handle):
 
         url = "https://0n1-test.factorlabs.io/v1/pfptracking"
