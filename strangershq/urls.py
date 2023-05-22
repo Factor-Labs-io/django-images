@@ -19,6 +19,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+    path('check', HealthCheckView.as_view(), name='health-check'),
     path('adduser', AddUserView.as_view(), name='add_user'),
     path('row/<str:address>', ReturnUserView.as_view(), name='get_user_info'),
     path('deleterow/<str:address>', DeleteUserView.as_view(), name='delete_user_info'),
