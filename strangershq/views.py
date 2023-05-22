@@ -12,6 +12,11 @@ from drf_yasg.utils import swagger_auto_schema
 from .serializers import AddUserSerializer, ReturnUserSerializer, UpdateHometownSerializer, UpdateInterestsSerializer, TwitterTrackingSerializer, LeaderboardSerializer, ReturnAllSerializer
 import requests
 
+class HealthCheckView(APIView):
+    @swagger_auto_schema(operation_description="Health Check endpoint.")
+    def get(self, request):
+        return Response({"status": "Server is working"})
+
 class ConsumeAPI(APIView):
     @swagger_auto_schema(
         operation_id='add_user',
