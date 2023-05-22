@@ -24,7 +24,7 @@ def del_ext(directory, ext):
 
 
 def pfpCompare(token_id, twit_handle):
-  api_key_moralis = os.getenv('api_key')
+  api_key_moralis = os.getenv('API_KEY')
   address = "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D"
 
   url = f"https://api.twitter.com/2/users/by/username/{twit_handle}?user.fields=profile_image_url"
